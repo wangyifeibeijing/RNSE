@@ -1,5 +1,11 @@
+%CluteringMeasure function.
+%input:
+%       Y:output from clustering function
+%       predY:true label
+%output: result = [ACC MIhat Purity];
+
 function result = ClusteringMeasure(Y, predY)
-% result = [ACC MIhat Purity];
+
 
 if size(Y,2) ~= 1
     Y = Y';
@@ -38,11 +44,6 @@ predLidx = unique(predY); pred_classnum = length(predLidx);
 correnum = 0;
 for ci = 1:pred_classnum
     incluster = Y(find(predY == predLidx(ci)));
-%     cnub = unique(incluster);
-%     inclunub = 0;
-%     for cnubi = 1:length(cnub)
-%         inclunub(cnubi) = length(find(incluster == cnub(cnubi)));
-%     end;
     inclunub = hist(incluster, 1:max(incluster)); if isempty(inclunub) inclunub=0;end;
     correnum = correnum + max(inclunub);
 end;
@@ -151,7 +152,7 @@ function [C,T]=hungarian(A)
 % Mathematical Software, 6(1):104-111, 1980.
 
 % v1.0  96-06-14. Niclas Borlin, niclas@cs.umu.se.
-%                 Department of Computing Science, Umeå University,
+%                 Department of Computing Science, Ume?University,
 %                 Sweden. 
 %                 All standard disclaimers apply.
 
