@@ -6,11 +6,10 @@ function [ label,S,P ] = RNSE( X,clusnum, alpha,beta)
 %   clusnum: number of clusters
 %   alpha,beta:parameters
 
-%   W:n*n
-%   S:n*n
-%   P:c*n
-%   diag:n*1
-%   I:n*1
+%   W:n*n input similarity matrix
+%   S:n*n output similarity matrix
+%   P:c*n output indicator matrix
+
 
 issymmetric=1;
 [~, n] = size(X);
@@ -21,7 +20,7 @@ oneeye=eye(n,n);
 W=oneeye+W1;
 I=ones(n,1);
 P=rand(clusnum,n);
-maxiteration=100;
+maxiteration=100;% iteration time of the main function
 for i=1:maxiteration
     tempppt=W+beta*(P'*P);
     T=(0.5/alpha)*((tempppt)-diag(tempppt)*I');
@@ -30,11 +29,11 @@ for i=1:maxiteration
     
 end
 
-[~, label]=max(P);
+[~, label]=max(P);%get label from the indicator
 
 end
 
-function [S]=constructS(T,n)
+function [S]=constructS(T,n)%optimizing S while keeping P fixed
 nt=n;
 iterationS=50;
 
@@ -50,7 +49,7 @@ for iss=1:iterationS
 end
 S=S_2;
 end
-function [s1]=PC_1(s01,nt)
+function [s1]=PC_1(s01,nt)%optimal solution of PC1
 ns01=nt;
 all_1=ones(ns01,ns01);
 one_1=ones(ns01,1);
@@ -58,20 +57,17 @@ temps01=s01*one_1;
 s1=s01+(((one_1'*temps01)*one_1)*one_1'/(ns01*ns01))+(1.0/ns01)*all_1'-(1.0/ns01)*(temps01)*one_1'-(1.0/ns01)*one_1*(one_1'*s01);
 
 end
-function [s2]=PC_2(s02)
+function [s2]=PC_2(s02)%optimal solution of PC2
 s02(s02<0.0)=0.0;
 s2=s02;
 end
-function [P]=constructP(P0,S)
+function [P]=constructP(P0,S)%optimizing P while keeping S fixed
 miu=0.9;
 lambda=0.5;
 iterationP=50;
 for ip=1:iterationP
     temp1=P0*(S+S')+2.0*P0;
     temp2=(temp1*P0')*P0;
-    %temp3=temp2;
-    %temp3(temp3==0)=10;
-    %mint2=min(min(temp3))*1e-9;
     P0=P0.*((1-lambda+lambda*(temp1./temp2+eps)).^miu);
 end
 P=P0;

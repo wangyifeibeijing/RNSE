@@ -12,9 +12,9 @@ cluster_num= length(unique(gt))
 times10 = zeros(roundtime,3);
 for j=1:roundtime  
     
-    [ la,s,p ] = RNSE( data,cluster_num,1e0,1e0);
+    [ la,s,p ] = RNSE( data,cluster_num,1e0,1e0);%call RNSE. la is the label output by RNSE, s is the similarity matrix, p is the indicator matrix. 
     la=la-(min(la));
-    result = ClusteringMeasure(double(gt), double(la));
+    result = ClusteringMeasure(double(gt), double(la));%call ClusteringMeasure.calculate acc NMI and purity
     times10(j,:) = result;
 end
 
@@ -36,7 +36,7 @@ result_all(2,2)=std_nmi;
 result_all(3,1)=purity;
 result_all(3,2)=std_purity;
 save_pa=['rnse_test_result/',name];
-save_path=[save_pa,'.mat'];
+save_path=[save_pa,'.mat'];%save result in rnse_test_result
 save(save_path,'all_acc','all_nmi','all_purity','acc','nmi','purity','std_acc','std_nmi','std_purity','label_old','s','p')
 end
 

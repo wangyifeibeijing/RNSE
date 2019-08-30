@@ -14,6 +14,7 @@ function [ data_nd,grla ] = data_fetch( name )
         
         [m,n]=size(data);
         data_n=zeros(1,n);
+        %normalization
         for i=1:n
             data_n(1,i)=norm(data(:,i));
         end

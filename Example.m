@@ -14,5 +14,5 @@ parfor i = 1 : length( subdir )
         name = name(1:a(1)-1);
     end
     [data,gt]=data_fetch(name);
-    result_all  = use_single_rnse( name ,2);      
+    result_all  = use_single_rnse( name ,2);     %call the  use_single_rnse function '2' means the function would be run 2 times and the output would include the mean and std.
 end
